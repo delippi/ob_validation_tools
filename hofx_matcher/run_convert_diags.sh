@@ -28,7 +28,7 @@ fi
 sleep 5
 
 
-OPSROOT="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/MATS/ob_validation_tools/May2024_retro/${VERSION}"
+OPSROOT="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/MATS/ob_validation_tools/hofx_matcher/May2024_retro/${VERSION}"
 COMROOT="${OPSROOT}/${EXP_NAME}"
 JDIAGDIR="${COMROOT}"
 
@@ -95,6 +95,7 @@ while [[ ${date} -le ${EDATE} ]]; do
     jdiags+=(${JDIAGDIR}/rrfs.${pdy}/${cyc}/diag_conv_q_anl.${pdy}${cyc}.nc4)
     jdiags+=(${JDIAGDIR}/rrfs.${pdy}/${cyc}/diag_conv_ps_anl.${pdy}${cyc}.nc4)
     jdiags+=(${JDIAGDIR}/rrfs.${pdy}/${cyc}/diag_conv_uv_anl.${pdy}${cyc}.nc4)
+    jdiags+=(${JDIAGDIR}/rrfs.${pdy}/${cyc}/diag_conv_rw_anl.${pdy}${cyc}.nc4)
 
     # Run the Python script with analysis time and file list
     python gdiag_to_jdiag.py "$date" "${jdiags[@]}"

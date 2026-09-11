@@ -13,8 +13,6 @@ source $rrfswx/ush/fix_rrfs_locations.sh
 
 cd $home
 
-#PDY="20240506"
-#cyc="01"
 cdate="2024050601"
 exp="det_c13_3dvar_jedi_test"
 if [[ $# -ge 2 ]]; then
@@ -29,7 +27,7 @@ cp $FIX_RRFS_LOCATION/gsi/RRFS_CONUS_13km/fv3_grid_spec .
 PDY="${cdate:0:8}"
 cyc="${cdate:8:2}"
 version="v1.2.0"
-MATSdir="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/MATS/ob_validation_tools"
+MATSdir="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/MATS/ob_validation_tools/hofx_matcher"
 RETROdir="$MATSdir/May2024_retro/${version}/${exp}/rrfs.${PDY}/${cyc}"
 grid="./fv3_grid_spec"
 lat_tol=0.0005
@@ -43,8 +41,8 @@ adpupa_airTemperature_120
 #adpupa_airTemperature_132
 adpupa_specificHumidity_120
 #adpupa_specificHumidity_132
-adpupa_stationPressure_120
-adpupa_winds_220
+#adpupa_stationPressure_120
+#adpupa_winds_220
 #adpupa_winds_232
 
 #aircar_airTemperature_133
@@ -107,7 +105,7 @@ adpupa_winds_220
 #satwnd_winds_246_272
 #satwnd_winds_247_272
 
-#nexrad_radialVelocity_999
+nexrad_radialVelocity_999
 )
 
 for y in "${yamls[@]}"; do
