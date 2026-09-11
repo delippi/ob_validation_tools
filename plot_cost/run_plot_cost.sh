@@ -15,6 +15,9 @@ jedi_file=$(ls $jedi | head -n 1)
 #echo $gsi_file
 #echo $jedi_file
 
+cp $gsi_file gsi.log
+cp $jedi_file jedi.log
+
 python plot_cost.py \
   --jedi "$jedi_file" \
   --gsi "$gsi_file" \
