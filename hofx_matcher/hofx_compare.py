@@ -43,11 +43,11 @@ from scipy.spatial import cKDTree
 # Unified threshold logic for dh and d_err
 # ---------------------------------------------------------------
 def get_default_thresholds(varname):
-    if varname == "airTemperature":
+    if varname in ("airTemperature", "airTemperatureAt2M"):
         return 0.5, 0.1       # (dh,K), (err,K)
     elif varname in ("windEastward", "windNorthward", "radialVelocity"):
         return 0.5, 0.1       # m/s
-    elif varname == "specificHumidity":
+    elif varname in ("specificHumidity", "specificHumidityAt2M"):
         return 0.0005, 0.001  # kg/kg
     elif varname == "stationPressure":
         return 0.5, 0.5       # hPa
@@ -1151,3 +1151,4 @@ plt.savefig(args.output + "_8panel.png", dpi=180)
 print("Saved:", args.output + "_8panel.png")
 
 print("Done.")
+

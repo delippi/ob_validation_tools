@@ -3,8 +3,8 @@
 home=`pwd`
 
 #RDASApp="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260526.dev-sci/sorc/RDASApp"
-RDASApp="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260819.rw/sorc/RDASApp"
-rrfswx="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260819.rw"
+RDASApp="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260930.dev-sci/sorc/RDASApp"
+rrfswx="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260930.dev-sci"
 
 echo $RDASApp
 cd $RDASApp/ush
@@ -37,9 +37,9 @@ time_tol=10
 
 # Upper-air conventional
 yamls=(
-adpupa_airTemperature_120
+#adpupa_airTemperature_120
 #adpupa_airTemperature_132
-adpupa_specificHumidity_120
+#adpupa_specificHumidity_120
 #adpupa_specificHumidity_132
 #adpupa_stationPressure_120
 #adpupa_winds_220
@@ -49,23 +49,28 @@ adpupa_specificHumidity_120
 #aircar_specificHumidity_133
 #aircar_winds_233
 
-#aircft_airTemperature_130
-#aircft_airTemperature_131
-#aircft_airTemperature_134
-#aircft_airTemperature_135
-##aircft_specificHumidity_134
-#aircft_winds_230
-#aircft_winds_231
-#aircft_winds_234
-#aircft_winds_235
+aircft_airTemperature_130
+aircft_airTemperature_131
+aircft_airTemperature_134
+aircft_airTemperature_135
+aircft_specificHumidity_134
+aircft_winds_230
+aircft_winds_231
+aircft_winds_234
+aircft_winds_235
 
 #proflr_winds_227
 #vadwnd_winds_224
 #rassda_airTemperature_126
 # Surface conventional
+#adpsfc_airTemperatureAt2M_181  #gsd_terrain_match_surfTobs
 #adpsfc_airTemperature_181  #gsd_terrain_match_surfTobs
 #adpsfc_airTemperature_183
 #adpsfc_airTemperature_187  #gsd_terrain_match_surfTobs
+#msonet_airTemperature_188
+#sfcshp_airTemperature_180
+#sfcshp_airTemperature_182
+#sfcshp_airTemperature_183
 #adpsfc_specificHumidity_181
 #adpsfc_specificHumidity_183
 #adpsfc_specificHumidity_187
@@ -74,14 +79,10 @@ adpupa_specificHumidity_120
 #adpsfc_winds_281
 #adpsfc_winds_284
 #adpsfc_winds_287
-#msonet_airTemperature_188
 #msonet_specificHumidity_188
 #msonet_stationPressure_188
 #msonet_winds_288
 
-#sfcshp_airTemperature_180
-#sfcshp_airTemperature_182
-#sfcshp_airTemperature_183
 #sfcshp_specificHumidity_180
 #sfcshp_specificHumidity_182
 #sfcshp_specificHumidity_183
@@ -105,7 +106,7 @@ adpupa_specificHumidity_120
 #satwnd_winds_246_272
 #satwnd_winds_247_272
 
-nexrad_radialVelocity_999
+#nexrad_radialVelocity_999
 )
 
 for y in "${yamls[@]}"; do

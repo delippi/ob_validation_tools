@@ -40,7 +40,7 @@ CTL_COMROOT="${OPSROOT}/${CTL_NAME}"
 CTL_JDIAGDIR="${CTL_COMROOT}"
 
 # Specify your RDASApp build (mostly for module loads)
-AppPath="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260821.rw/sorc/"
+AppPath="/lfs/h2/emc/da/noscrub/donald.e.lippi/RRFSv1/PRs/rrfs-workflow.20260930.dev-sci/sorc/"
 RDASApp="RDASApp"
 
 RDASApp="$AppPath/$RDASApp"

@@ -1,7 +1,9 @@
 #!/bin/bash
 
 path="/lfs/h2/emc/stmp/donald.e.lippi/May2024_retro/v1.2.0/"
-exp="det_c13_3dvar_jedi_baseline005"
+#exp="det_c13_3dvar_jedi_baseline005"
+exp="det_c13_3dvar_jedi_sfcCorrected"
+exp="det_c13_3dvar_jedi_at2m_identity"
 
 cdate="2024050601"
 
@@ -23,4 +25,6 @@ python plot_cost.py \
   --gsi "$gsi_file" \
   --cdate "$cdate" \
   --gsi_half \
-  -o cost_compare.png
+  -o cost_compare_${exp}.png
+
+

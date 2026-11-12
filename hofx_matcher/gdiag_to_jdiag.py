@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+import argparse
 import netCDF4 as nc
 import numpy as np
 from datetime import datetime, timedelta
-import sys
 import os
 
 # Platform mapping inferred from jdiag file list
@@ -98,14 +98,17 @@ def map_prep_use_flag_to_qc(flag):
     else:
         return 12  # Rejected
 
-def process_non_wind_file(anl_file_path, ges_file_path, jedi_var, analysis_time_str):
+def process_non_wind_file(
+    anl_file_path, ges_file_path, base_jedi_var, analysis_time_str, surface_at2m=False
+):
     """
     Process a non-wind GSI diagnostic file and convert it to JEDI jdiag format.
 
     Args:
         file_path (str): Path to the GSI diagnostic netCDF file
-        jedi_var (str): JEDI variable name corresponding to the observation
+        base_jedi_var (str): JEDI variable name before platform-specific naming
         analysis_time_str (str): Analysis time string for time conversion
+        surface_at2m (bool): Use At2M names for surface temperature and humidity
     """
     with nc.Dataset(ges_file_path, 'r') as ges_f, nc.Dataset(anl_file_path, 'r') as anl_f:
         # Read variables from the GSI file
@@ -129,7 +132,7 @@ def process_non_wind_file(anl_file_path, ges_file_path, jedi_var, analysis_time_
         analysis_use_flag = anl_f.variables['Analysis_Use_Flag'][:]
         prep_use_flag = anl_f.variables['Prep_Use_Flag'][:]
         # Convert stationPressure units: GSI uses hPa, JEDI expects Pa
-        if jedi_var == "stationPressure":
+        if base_jedi_var == "stationPressure":
             observation = observation * 100.0
             ombg = ombg * 100.0
             oman = oman * 100.0
@@ -142,6 +145,14 @@ def process_non_wind_file(anl_file_path, ges_file_path, jedi_var, analysis_time_
                 print(f"Warning: Observation_Type {typ} not in platform_map, skipping.")
                 continue
             platform = platform_map[typ]
+            # One GSI file can contain both surface and upper-air platforms.
+            jedi_var = base_jedi_var
+            if (
+                surface_at2m
+                and platform in ("adpsfc", "msonet", "sfcshp")
+                and base_jedi_var in ("airTemperature", "specificHumidity")
+            ):
+                jedi_var += "At2M"
             mask = obs_type == typ
             nobs = int(np.sum(mask))
             if nobs == 0:
@@ -370,7 +381,7 @@ def process_wind_file(anl_file_path, ges_file_path, analysis_time_str):
                     eff_qc2.createVariable('windEastward', 'i4', ('Location',))[:] = qc_flags
                     eff_qc2.createVariable('windNorthward', 'i4', ('Location',))[:] = qc_flags
 
-def convert_gsi_to_jdiag(file_list, analysis_time_str):
+def convert_gsi_to_jdiag(file_list, analysis_time_str, surface_at2m=False):
     """Convert a list of GSI diagnostic files to JEDI jdiag format."""
     red = "\x1b[31m"
     green = "\x1b[32m"
@@ -403,17 +414,21 @@ def convert_gsi_to_jdiag(file_list, analysis_time_str):
         if var == 'uv':
             process_wind_file(anl_file_path, ges_file_path, analysis_time_str)
         else:
-            process_non_wind_file(anl_file_path, ges_file_path, jedi_var, analysis_time_str)
+            process_non_wind_file(
+                anl_file_path, ges_file_path, jedi_var, analysis_time_str, surface_at2m
+            )
         anl_filename = filename
         ges_filename = filename.replace("_anl", "_ges")
         print(f"{green}Processed {ges_filename} & {anl_filename} into jdiag files.{normal}")
 
 if __name__ == "__main__":
-    """Entry point to handle command-line arguments."""
-    if len(sys.argv) < 3:
-        print("Usage: python gdiag_to_jdiag.py <analysis_time> <file1> <file2> ...")
-        print("Example: python gdiag_to_jdiag.py 2024050606 /path/to/diag_conv_rw_anl.2024050606.nc4")
-        sys.exit(1)
-    analysis_time = sys.argv[1]
-    files = sys.argv[2:]
-    convert_gsi_to_jdiag(files, analysis_time)
+    parser = argparse.ArgumentParser(description="Convert GSI diagnostics to JEDI format.")
+    parser.add_argument("analysis_time", metavar="YYYYMMDDHH")
+    parser.add_argument("files", metavar="ANALYSIS_FILE", nargs="+")
+    parser.add_argument(
+        "--surface-at2m", action="store_true",
+        help="Use At2M names for temperature and humidity from adpsfc, msonet, and sfcshp.",
+    )
+    args = parser.parse_args()
+    convert_gsi_to_jdiag(args.files, args.analysis_time, args.surface_at2m)
+
